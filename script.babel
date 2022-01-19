@@ -1,0 +1,38 @@
+const quote = document.getElementById("quote");
+const author = document.getElementById("author");
+const twitterBtn = document.getElementById("twitterBtn");
+// const refresh= ()=>document.location.reload(true);
+let quoteData = '';
+const getNewQuote = ()=>{
+  let randomNum = Math.floor(Math.random()*1643);
+  quote.innerText = `${quoteData[randomNum].text}`;
+  author.innerText = `${quoteData[randomNum].author}`;
+  
+  // console.log(quoteData[randomNum].author);
+  // console.log(quoteData[randomNum].text);
+}
+const getQuotes = async ()=>{
+  // const proxy= "http://cors-anywhere.herokuapp.com/";
+   const apiUrl='https://type.fit/api/quotes';;
+    try{
+      const res = await fetch(apiUrl);
+      quoteData = await res.json();
+      getNewQuote();
+        // console.log(quoteData);
+    }catch(error){
+    console.log("Whooo There is a promble!",error);
+  }
+};
+
+getQuotes();
+
+const twittQuote = ()=>{
+  const qouteText = quote.innerText;
+  const authorText = author.innerText;
+  
+  const twitterUrl = `https://twitter.com/intent/tweet?text=${qouteText} - ${authorText}`;
+  window.open(twitterUrl,'_blank');
+  
+}
+
+twitterBtn.addEventListener('click',twittQuote);
